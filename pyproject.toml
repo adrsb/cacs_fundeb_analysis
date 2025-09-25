@@ -17,23 +17,22 @@ dependencies = [
     "sqlmodel",
     "python-dotenv",
     "requests",
-
     # Machine Learning
     "scikit-learn",
     "numpy",
     "scipy",
     "joblib",
-
     # Relatórios e templates
     "jinja2",
     "markdown",
-
     # Visualização e dashboards
     "streamlit",
     "plotly",
-
     # Agentes de IA
     "agno",
+    "tabula-py>=2.10.0",
+    "openpyxl>=3.1.5",
+    "xlrd>=2.0.2",
 ]
 
 [project.optional-dependencies]

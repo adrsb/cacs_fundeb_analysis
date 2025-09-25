@@ -6,6 +6,8 @@ import os
 
 import pandas as pd
 
+from cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
+
 
 def load_pdf_current_account_statement(
     path: str, column_areas: list[int] | None = None
@@ -63,7 +65,6 @@ def load_all_pdf_current_account_statement(path_base: str, suffix: str) -> pd.Da
     Retorna:
         pd.DataFrame: Dados concatenados de todos os PDFs.
     """
-    from utils.file_paths import list_files_by_prefix_suffix
 
     path_list = list_files_by_prefix_suffix(path_base, suffix=suffix)
     area_columns = [

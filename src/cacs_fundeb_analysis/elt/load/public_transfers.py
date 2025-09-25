@@ -3,8 +3,14 @@ Módulo de ingestão de dados do FNDE.
 """
 
 from sys import prefix
+
 import pandas as pd
-from typing import Optional
+
+from src.cacs_fundeb_analysis.utils.excel import filter_sheet_names
+from src.cacs_fundeb_analysis.elt.transform.public_transfers import (
+    clean_fnde_sheet_data,
+    filter_uf_fnde_sheet_data,
+)
 
 
 def load_fnde_sheet_data(
@@ -48,12 +54,6 @@ def load_fnde_sheet_data(
 def load_all_fnde_sheet_data(
     file_path: str, state_level: str, uf: str, adjust: bool = False, year: int = 2025
 ) -> pd.DataFrame:
-    from utils.excel import filter_sheet_names
-    from processing.public_transfers import (
-        clean_fnde_sheet_data,
-        filter_uf_fnde_sheet_data,
-    )
-
     uf = uf.upper()
     state_level = state_level.upper()
     filtered_sheet_names = filter_sheet_names(file_path, state_level)

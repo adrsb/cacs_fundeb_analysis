@@ -1,21 +1,25 @@
+# SYSTEM IMPORTS
 import pandas as pd
 
-from data.loading.application_account_statement import (
+# PROPRIETIES IMPORTS
+from src.cacs_fundeb_analysis.elt.load.application_account_statement import (
     load_all_pdf_application_account_statement,
     load_manual_applications_account_statement,
 )
-from data.loading.current_account_statement import (
+from src.cacs_fundeb_analysis.elt.transform.application_account_statement import (
+    clean_pdf_applications_account_statemet,
+)
+from src.cacs_fundeb_analysis.elt.load.current_account_statement import (
     load_all_excel_banks_current_account,
     load_all_pdf_current_account_statement,
 )
-from processing.application_account_statement import (
-    clean_pdf_applications_account_statemet,
-)
-from processing.current_account_statement import (
+from src.cacs_fundeb_analysis.elt.transform.current_account_statement import (
     clean_pdf_current_account_statement,
 )
-from processing.bank_statement import bank_statement_consolidation
-from utils.io import save_dataframe_to_excel
+from src.cacs_fundeb_analysis.elt.transform.bank_statement import (
+    bank_statement_consolidation,
+)
+from src.cacs_fundeb_analysis.utils.io import save_dataframe_to_excel
 
 
 def run_bank_statement_pipeline(

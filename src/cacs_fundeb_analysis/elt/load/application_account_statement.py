@@ -6,6 +6,8 @@ import os
 
 import pandas as pd
 
+from cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
+
 
 def load_manual_applications_account_statement(year: int) -> pd.DataFrame:
     """
@@ -105,7 +107,6 @@ def load_all_pdf_application_account_statement(
     Retorna:
         pd.DataFrame: DataFrame com períodos e rendimentos brutos.
     """
-    from utils.file_paths import list_files_by_prefix_suffix
 
     path_list = list_files_by_prefix_suffix(path_base, suffix=suffix)
     if not path_list:

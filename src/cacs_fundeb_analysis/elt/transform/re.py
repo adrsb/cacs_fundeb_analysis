@@ -3,10 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from pathlib import Path
-import pandas as pd
-from data.loading.re import load_excel_re
-from utils.file_paths import list_files_by_prefix_suffix
+from src.cacs_fundeb_analysis.elt.load.re import load_excel_re
+from src.cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
 
 
 def clean_excel_re(df: pd.DataFrame) -> pd.DataFrame:
