@@ -1,0 +1,70 @@
+[project]
+name = "cacs-fundeb-analysis"
+version = "0.1.0"
+description = "Projeto de Data Science ponta a ponta com ETL, ML, relatórios, dashboards e agentes de IA"
+authors = [
+    { name = "Ádrian S. Barbosa", email = "seuemail@example.com" }
+]
+readme = "README.md"
+requires-python = ">=3.13"
+# Dependências principais
+dependencies = [
+    # ETL e manipulação de dados
+    "pandas",
+    "polars",
+    "pyarrow",
+    "sqlalchemy",
+    "sqlmodel",
+    "python-dotenv",
+    "requests",
+
+    # Machine Learning
+    "scikit-learn",
+    "numpy",
+    "scipy",
+    "joblib",
+
+    # Relatórios e templates
+    "jinja2",
+    "markdown",
+
+    # Visualização e dashboards
+    "streamlit",
+    "plotly",
+
+    # Agentes de IA
+    "agno",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "ruff",
+    "pre-commit",
+    "ipykernel",
+    "jupyter",
+]
+
+[project.scripts]
+elt = "cacs_fundeb_analysis.elt.extract:cli"
+transform = "cacs_fundeb_analysis.elt.transform:cli"
+load = "cacs_fundeb_analysis.elt.load:cli"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
