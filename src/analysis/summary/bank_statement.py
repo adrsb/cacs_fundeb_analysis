@@ -1,7 +1,9 @@
+import calendar
+
 import pandas as pd
 
 
-def bank_statement_summary_movimentation(
+def bank_statement_movement_summary(
     bank_statement_data: pd.DataFrame, moviment: str
 ) -> pd.Series:
     """
@@ -49,10 +51,6 @@ def bank_statement_summary_movimentation(
     ].sum()
 
     return grouped_credits
-
-
-import pandas as pd
-import calendar
 
 
 def banks_statement_summary(

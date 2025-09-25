@@ -2,14 +2,12 @@
 Módulo para ingestão de dados de extratos de aplicações financeiras.
 """
 
-import os
-
 import pandas as pd
 
-from cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
+from utils.file_paths import list_files_by_prefix_suffix
 
 
-def load_manual_applications_account_statement(year: int) -> pd.DataFrame:
+def extract_manual_applications_account_statement_data(year: int) -> pd.DataFrame:
     """
     Gera manualmente um extrato de rendimentos de aplicações financeiras
     para um determinado ano.
@@ -68,7 +66,7 @@ def load_manual_applications_account_statement(year: int) -> pd.DataFrame:
     return applications
 
 
-def load_pdf_application_account_statement(path_file: str) -> pd.Series:
+def extract_pdf_application_account_statement_data(path_file: str) -> pd.Series:
     """
     Lê um único PDF de aplicação financeira e retorna o valor de rendimento.
 
@@ -91,10 +89,13 @@ def load_pdf_application_account_statement(path_file: str) -> pd.Series:
 
     # Extrai o valor da penúltima linha (ajustar conforme layout real)
     valor = df_list[0][-12:-11]["Unnamed: 1"].values
-    return pd.Series({"PERÍODO": path_file[-34:-29], "RENDIMENTO": valor[0]})
+
+    # Extrai o período do nome do arquivo
+    period = path_file.split("\\")[-1][:5]
+    return pd.Series({"PERÍODO": period, "RENDIMENTO": valor[0]})
 
 
-def load_all_pdf_application_account_statement(
+def extract_all_pdf_application_account_statement_data(
     path_base: str, suffix: str
 ) -> pd.DataFrame:
     """
@@ -114,7 +115,7 @@ def load_all_pdf_application_account_statement(
 
     records = []
     for path in path_list:
-        income = load_pdf_application_account_statement(path)
+        income = extract_pdf_application_account_statement_data(path)
         records.append(income)
 
     df = pd.DataFrame(records)

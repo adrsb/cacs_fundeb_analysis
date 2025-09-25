@@ -5,7 +5,7 @@ Módulo para limpeza e transformação de dados de extratos bancários da conta 
 import pandas as pd
 
 
-def clean_pdf_current_account_statement(df: pd.DataFrame) -> pd.DataFrame:
+def transform_pdf_current_account_statement_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Recebe DataFrame bruto e aplica limpeza e transformação.
 

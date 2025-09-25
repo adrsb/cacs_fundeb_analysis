@@ -2,15 +2,11 @@
 Módulo para ingestão de dados de extratos de aplicações financeiras.
 """
 
-import pandas as pd
 import numpy as np
-
-
 import pandas as pd
-import numpy as np
 
 
-def clean_pdf_applications_account_statemet(df: pd.DataFrame) -> pd.DataFrame:
+def transform_pdf_applications_account_statemet_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Recebe DataFrame bruto de aplicações e retorna no formato padronizado do projeto.
     """

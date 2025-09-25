@@ -2,18 +2,16 @@
 Módulo de ingestão de dados do FNDE.
 """
 
-from sys import prefix
-
 import pandas as pd
 
-from src.cacs_fundeb_analysis.utils.excel import filter_sheet_names
-from src.cacs_fundeb_analysis.etl.transform.public_transfers import (
-    clean_fnde_sheet_data,
+from src.etl.transform.public_transfers import (
     filter_uf_fnde_sheet_data,
+    transform_fnde_sheet_data,
 )
+from src.utils.excel import filter_sheet_names
 
 
-def load_fnde_sheet_data(
+def extract_fnde_sheet_data(
     file_path: str,
     sheet_name: str,
     adjust: bool = False,
@@ -51,7 +49,7 @@ def load_fnde_sheet_data(
     return pd.DataFrame()
 
 
-def load_all_fnde_sheet_data(
+def extract_all_fnde_sheet_data(
     file_path: str, state_level: str, uf: str, adjust: bool = False, year: int = 2025
 ) -> pd.DataFrame:
     uf = uf.upper()
@@ -68,8 +66,8 @@ def load_all_fnde_sheet_data(
 
     df_base = pd.DataFrame(columns=["MÊS"])
     for name in filtered_sheet_names:
-        raw_df_new = load_fnde_sheet_data(file_path, name, adjust)
-        clean_df_new = clean_fnde_sheet_data(raw_df_new)
+        raw_df_new = extract_fnde_sheet_data(file_path, name, adjust)
+        clean_df_new = transform_fnde_sheet_data(raw_df_new)
         filtered_df_new = filter_uf_fnde_sheet_data(
             clean_df_new, name, uf, adjusts=adjust, year=year
         )

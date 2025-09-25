@@ -1,25 +1,24 @@
 # SYSTEM IMPORTS
 import pandas as pd
 
-# PROPRIETIES IMPORTS
-from src.cacs_fundeb_analysis.etl.extract.application_account_statement import (
-    load_all_pdf_application_account_statement,
-    load_manual_applications_account_statement,
+from src.etl.extract.application_account_statement import (
+    extract_all_pdf_application_account_statement_data,
+    extract_manual_applications_account_statement_data,
 )
-from src.cacs_fundeb_analysis.etl.transform.application_account_statement import (
-    clean_pdf_applications_account_statemet,
+from src.etl.extract.current_account_statement import (
+    extract_all_excel_banks_current_account_data,
+    extract_all_pdf_current_account_statement_data,
 )
-from src.cacs_fundeb_analysis.etl.extract.current_account_statement import (
-    load_all_excel_banks_current_account,
-    load_all_pdf_current_account_statement,
+from src.etl.transform.application_account_statement import (
+    transform_pdf_applications_account_statemet_data,
 )
-from src.cacs_fundeb_analysis.etl.transform.current_account_statement import (
-    clean_pdf_current_account_statement,
-)
-from src.cacs_fundeb_analysis.etl.transform.bank_statement import (
+from src.etl.transform.bank_statement import (
     bank_statement_consolidation,
 )
-from src.cacs_fundeb_analysis.utils.io import save_dataframe_to_excel
+from src.etl.transform.current_account_statement import (
+    transform_pdf_current_account_statement_data,
+)
+from src.utils.io import save_dataframe_to_excel
 
 
 def run_bank_statement_pipeline(
@@ -27,7 +26,7 @@ def run_bank_statement_pipeline(
     year: int,
     base_dir: str = "..\\data",
     current_account_statement_suffix: str = "Extrato_Conta_Corrente.pdf",
-    application_account_statement_suffix: str = "Extrato_Conta_Aplicações.pdf",
+    application_account_statement_suffix: str = "Extrato_Conta_Aplicação.pdf",
 ) -> pd.DataFrame:
     """
     Lê, limpa, consolida e exporta em excel os extratos da conta corrente e da conta de aplicações.
@@ -43,11 +42,13 @@ def run_bank_statement_pipeline(
         pd.DataFrame: DataFrame consolidado com todas as transações e saldo acumulado.
     """
     # 1. Leitura dos dados brutos
-    raw_current_account_statement = load_all_pdf_current_account_statement(
+    raw_current_account_statement = extract_all_pdf_current_account_statement_data(
         base_dir, current_account_statement_suffix
     )
-    raw_application_account_statement = load_all_pdf_application_account_statement(
-        base_dir, application_account_statement_suffix
+    raw_application_account_statement = (
+        extract_all_pdf_application_account_statement_data(
+            base_dir, application_account_statement_suffix
+        )
     )
 
     # 2. Salvar dados brutos em interin/
@@ -63,11 +64,13 @@ def run_bank_statement_pipeline(
     )
 
     # 3. Limpeza e padronização
-    clean_current_account_statement = clean_pdf_current_account_statement(
+    clean_current_account_statement = transform_pdf_current_account_statement_data(
         raw_current_account_statement
     )
-    clean_application_account_statement = clean_pdf_applications_account_statemet(
-        raw_application_account_statement
+    clean_application_account_statement = (
+        transform_pdf_applications_account_statemet_data(
+            raw_application_account_statement
+        )
     )
 
     # 4. Salva dados limpos em processed/

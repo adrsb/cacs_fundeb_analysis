@@ -6,10 +6,10 @@ import os
 
 import pandas as pd
 
-from cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
+from src.utils.file_paths import list_files_by_prefix_suffix
 
 
-def load_pdf_current_account_statement(
+def extract_pdf_current_account_statement_data(
     path: str, column_areas: list[int] | None = None
 ) -> pd.DataFrame:
     """
@@ -54,7 +54,25 @@ def load_pdf_current_account_statement(
     return result  # Retorna DataFrame bruto
 
 
-def load_all_pdf_current_account_statement(path_base: str, suffix: str) -> pd.DataFrame:
+def extract_excel_bank_current_account_data(file_path: str) -> pd.DataFrame:
+    """
+    Lê um único arquivo Excel de extrato bancário e retorna um DataFrame bruto.
+    """
+    df = pd.read_excel(
+        io=file_path,
+        sheet_name="Extrato",
+        skiprows=2,
+        index_col="Data",
+        verbose=False,
+        thousands=".",
+        decimal=",",
+    )
+    return df
+
+
+def extract_all_pdf_current_account_statement_data(
+    path_base: str, suffix: str
+) -> pd.DataFrame:
     """
     Lê todos os arquivos PDF de extratos bancários da conta corrente em uma pasta.
 
@@ -75,11 +93,11 @@ def load_all_pdf_current_account_statement(path_base: str, suffix: str) -> pd.Da
     dfs = []
     for path in path_list:
         try:
-            df = load_pdf_current_account_statement(
+            df = extract_pdf_current_account_statement_data(
                 path=path, column_areas=area_columns[0]
             )
         except Exception:
-            df = load_pdf_current_account_statement(
+            df = extract_pdf_current_account_statement_data(
                 path=path, column_areas=area_columns[1]
             )
         dfs.append(df)
@@ -90,30 +108,16 @@ def load_all_pdf_current_account_statement(path_base: str, suffix: str) -> pd.Da
     return pd.concat(dfs, axis=0)
 
 
-def load_excel_bank_current_account(file_path: str) -> pd.DataFrame:
-    """
-    Lê um único arquivo Excel de extrato bancário e retorna um DataFrame bruto.
-    """
-    df = pd.read_excel(
-        io=file_path,
-        sheet_name="Extrato",
-        skiprows=2,
-        index_col="Data",
-        verbose=False,
-        thousands=".",
-        decimal=",",
-    )
-    return df
-
-
-def load_all_excel_banks_current_account(folder_path: str) -> pd.DataFrame:
+def extract_all_excel_banks_current_account_data(folder_path: str) -> pd.DataFrame:
     """
     Lê todos os arquivos .xlsx de uma pasta usando load_excel_bank e concatena.
     """
     list_dfs = []
     for file in os.listdir(folder_path):
         if file.lower().endswith(".xlsx"):
-            df = load_excel_bank(os.path.join(folder_path, file))
+            df = extract_excel_bank_current_account_data(
+                os.path.join(folder_path, file)
+            )
             list_dfs.append(df)
 
     if not list_dfs:
