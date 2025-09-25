@@ -17,6 +17,9 @@ dependencies = [
     "sqlmodel",
     "python-dotenv",
     "requests",
+    "tabula-py>=2.10.0",
+    "openpyxl>=3.1.5",
+    "xlrd>=2.0.2",
     # Machine Learning
     "scikit-learn",
     "numpy",
@@ -30,9 +33,6 @@ dependencies = [
     "plotly",
     # Agentes de IA
     "agno",
-    "tabula-py>=2.10.0",
-    "openpyxl>=3.1.5",
-    "xlrd>=2.0.2",
 ]
 
 [project.optional-dependencies]

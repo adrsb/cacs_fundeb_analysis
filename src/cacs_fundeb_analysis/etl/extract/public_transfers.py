@@ -7,7 +7,7 @@ from sys import prefix
 import pandas as pd
 
 from src.cacs_fundeb_analysis.utils.excel import filter_sheet_names
-from src.cacs_fundeb_analysis.elt.transform.public_transfers import (
+from src.cacs_fundeb_analysis.etl.transform.public_transfers import (
     clean_fnde_sheet_data,
     filter_uf_fnde_sheet_data,
 )

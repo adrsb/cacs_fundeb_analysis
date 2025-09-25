@@ -2,21 +2,21 @@
 import pandas as pd
 
 # PROPRIETIES IMPORTS
-from src.cacs_fundeb_analysis.elt.load.application_account_statement import (
+from src.cacs_fundeb_analysis.etl.extract.application_account_statement import (
     load_all_pdf_application_account_statement,
     load_manual_applications_account_statement,
 )
-from src.cacs_fundeb_analysis.elt.transform.application_account_statement import (
+from src.cacs_fundeb_analysis.etl.transform.application_account_statement import (
     clean_pdf_applications_account_statemet,
 )
-from src.cacs_fundeb_analysis.elt.load.current_account_statement import (
+from src.cacs_fundeb_analysis.etl.extract.current_account_statement import (
     load_all_excel_banks_current_account,
     load_all_pdf_current_account_statement,
 )
-from src.cacs_fundeb_analysis.elt.transform.current_account_statement import (
+from src.cacs_fundeb_analysis.etl.transform.current_account_statement import (
     clean_pdf_current_account_statement,
 )
-from src.cacs_fundeb_analysis.elt.transform.bank_statement import (
+from src.cacs_fundeb_analysis.etl.transform.bank_statement import (
     bank_statement_consolidation,
 )
 from src.cacs_fundeb_analysis.utils.io import save_dataframe_to_excel

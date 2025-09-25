@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.cacs_fundeb_analysis.elt.load.re import load_excel_re
+from src.cacs_fundeb_analysis.etl.extract.re import load_excel_re
 from src.cacs_fundeb_analysis.utils.file_paths import list_files_by_prefix_suffix
 
 
