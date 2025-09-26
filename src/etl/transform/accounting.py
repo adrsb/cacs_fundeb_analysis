@@ -7,6 +7,23 @@ import pandas as pd
 import numpy as np
 
 
+NATUREZA_FOLHA = [
+    "319004 - Contratação por Tempo Determinado ",
+    "319011 - Vencimentos e Vantagens Fixas - Pessoal Civil",
+    "319013 - Obrigações Patronais",
+    "319016 - Outras Despesas Variáveis - Pessoal Civil",
+    "319094 - Indenizações e Restituições Trabalhistas ",
+    "319113 - Obrigações Patronais",
+]
+
+NATUREZA_OUTRAS = [
+    "339046 - Auxílio-Alimentação",
+    "339039 - Outros Serviços de Terceiros - Pessoa Jurídica ",
+    "449052 - Equipamentos e Material Permanente ",
+    "335041 - Contribuições ",
+]
+
+
 def transform_accounting_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Transforma dados contábeis brutos em dados limpos e enriquecidos.
@@ -48,7 +65,10 @@ def transform_accounting_data(df: pd.DataFrame) -> pd.DataFrame:
 
     # Classificação
     df["Classificação"] = np.nan
-    # ... (listas de natureza e regras de classificação aqui)
+    df.loc[df["Natureza"].isin(NATUREZA_FOLHA), "Classificação"] = (
+        "Despesas com Remuneração dos Profissionais da Educação Básica"
+    )
+    df.loc[df["Natureza"].isin(NATUREZA_OUTRAS), "Classificação"] = "Outras Despesas"
 
     # Ajustes finais
     df["Despesas Pagas RAP"] = df["Despesas Pagas RAP"].astype("float64")
