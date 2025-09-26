@@ -1,4 +1,5 @@
 import pandas as pd
+from plotly import relative_import
 
 # Constantes para evitar repetição
 BUDGET_COLUMNS = [
@@ -101,3 +102,40 @@ def accounting_summary(accounting_data: pd.DataFrame) -> pd.DataFrame:
         .loc[:, SUMMARY_INDEX + SUMMARY_VALUES]  # garante ordem das colunas
     )
     return summary
+
+
+# Constantes de classificação
+CLASS_REMUNERACAO = "Despesas com Remuneração dos Profissionais da Educação Básica"
+CLASS_OUTRAS = "Outras Despesas"
+
+
+def filter_accounting_summary(
+    accounting_summary_data: pd.DataFrame, classification_flag: int
+) -> pd.DataFrame:
+    """
+    Filtra o resumo contábil por classificação e adiciona linha de total.
+
+    Args:
+        accounting_summary_data (pd.DataFrame): DataFrame resumo (pivot table).
+        classification_flag (int): Indicador de classificação.
+            - 0 -> Despesas com Remuneração dos Profissionais da Educação Básica
+            - 1 -> Outras Despesas
+
+    Returns:
+        pd.DataFrame: DataFrame filtrado com linha de total.
+    """
+    classification = CLASS_REMUNERACAO if classification_flag == 0 else CLASS_OUTRAS
+
+    df = accounting_summary_data.loc[
+        accounting_summary_data["Classificação"] == classification
+    ].copy()
+
+    # Calcula totais apenas para colunas numéricas
+    totals = df.sum(numeric_only=True)
+    totals["Classificação"] = classification
+    totals["Natureza"] = "TOTAL"
+
+    # Adiciona linha de total ao final
+    df = pd.concat([df, pd.DataFrame([totals])], ignore_index=True)
+
+    return df

@@ -24,7 +24,7 @@ NATUREZA_OUTRAS = [
 ]
 
 
-def transform_accounting_data(df: pd.DataFrame) -> pd.DataFrame:
+def transform_creditor_accounting_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Transforma dados contábeis brutos em dados limpos e enriquecidos.
     """
